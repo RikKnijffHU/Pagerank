@@ -12,14 +12,18 @@ public class Node {
 
 	public Node(String nodevalues) {
 		String[] splited = nodevalues.toString().split(",");
+		for (int i = 0; i < splited.length; i++) {
+			System.out.print(splited[i]+":"+i +" ");
+		}
+		System.out.println();
 		
 		if (splited[0].equals("fromNode")) {
 
 			this.nodeId = Integer.parseInt(splited[1]);
 			if (splited.length > 3) {
 				ArrayList<Integer> list = new ArrayList<Integer>();
-				for (int i = 2; i < splited.length; i++) {
-					System.out.print(splited[i] + " " +i +",");
+				for (int i = 3; i < splited.length; i++) {
+				
 					
 					list.add(Integer.parseInt(splited[i]));
 				}
@@ -81,14 +85,14 @@ public class Node {
 		String NodeInfo = "";
 		if (isNode) {
 			if (danglingNode) {
-				return "fromNode," + nodeId;
+				return "fromNode," + nodeId +","+nodeRank;
 			} else {
 
 				for (int toNode : adjacencyList) {
 					NodeInfo = NodeInfo + toNode + ",";
 				}
 				NodeInfo = NodeInfo.substring(0, NodeInfo.length() - 1);
-				return "fromNode," + nodeId + "," + NodeInfo;
+				return "fromNode," + nodeId + ","+ nodeRank+ "," + NodeInfo;
 			}
 		} else {
 			return "toNode," + nodeRank;
