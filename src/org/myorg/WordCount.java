@@ -147,14 +147,13 @@ public class WordCount extends Configured implements Tool {
 
 			pagerank = 1 - 0.85 + (0.85 * pagerank);
 			String adjacency = "";
-			System.out.println("KO");
+			
 			if (!fromNode.getAdjacencyList().isEmpty()) {
 				for (int i = 0; i < fromNode.getAdjacencyList().size(); i++) {
 					adjacency += "," + fromNode.getAdjacencyList().get(i);
 				}
 			}
-			System.out.println(fromNode.getNodeId()+ ","
-					+ pagerank + adjacency);
+			
 			context.write(new IntWritable(fromNode.getNodeId()), new Text(","
 					+ pagerank + adjacency));
 
@@ -179,7 +178,8 @@ public class WordCount extends Configured implements Tool {
 
 	public static class OrderReduce extends
 			Reducer<IntWritable, Text, IntWritable, Text> {
-
+// 1 / aantal nodes//
+		Double pagerank = 1.0 / 62585.0;
 		@Override
 		public void reduce(IntWritable key, Iterable<Text> values,
 				Context context) throws IOException, InterruptedException {
@@ -190,7 +190,7 @@ public class WordCount extends Configured implements Tool {
 				}
 			}
 
-			context.write(key, new Text(",1" + adjacencyList));
+			context.write(key, new Text(","+pagerank + adjacencyList));
 
 		}
 	}
