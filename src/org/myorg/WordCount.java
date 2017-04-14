@@ -25,8 +25,9 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Logger;
 
-public class WordCount extends Configured implements Tool {
 
+public class WordCount extends Configured implements Tool {
+private static double pageJumpRank= 0.85;
 	private static final Logger LOG = Logger.getLogger(WordCount.class);
 	private static NumberFormat nf = new DecimalFormat("00");
 
@@ -38,7 +39,7 @@ public class WordCount extends Configured implements Tool {
 
 	public int run(String[] args) throws Exception {
 		// convertInputfile("Input/p2p-Gnutella31.txt");
-
+		
 		boolean isCompleted = convertInputfile("Input/p2p-Gnutella31.txt",
 				"output/PageRank/iter00");
 		if (!isCompleted)
@@ -50,7 +51,7 @@ public class WordCount extends Configured implements Tool {
 
 			String inPath = "output/PageRank/iter" + nf.format(runs);
 			lastResultPath = "output/PageRank/iter" + nf.format(runs + 1);
-
+			
 			isCompleted = pageRankMethod(inPath, lastResultPath);
 
 		}
@@ -145,7 +146,7 @@ public class WordCount extends Configured implements Tool {
 				}
 			}
 
-			pagerank = 1 - 0.85 + (0.85 * pagerank);
+			pagerank = 1 - pageJumpRank + (pageJumpRank * pagerank);
 			String adjacency = "";
 			
 			if (!fromNode.getAdjacencyList().isEmpty()) {
